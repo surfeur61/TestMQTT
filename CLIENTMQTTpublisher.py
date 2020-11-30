@@ -16,19 +16,8 @@ def on_disconnect(client, userdata,rc):
         connection()
 
 def connection():
-        c=0
-        while not client.connected_flag:
-                try:
-                        client.connect(broker[c],1883,60)
-                        client.loop_start()
-                        while client.connected_flag==False:
-                                time.sleep(3)
-                except:
-                        c+=1
-                        pass
-
-                if c==len(broker):
-                        c=0
+        client.connect(broker,1883,60)
+        client.loop_start()
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -38,7 +27,6 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 client.on_disconnect = on_disconnect
-mqtt.Client.connected_flag=False
 result = None
 
 if (hostname=='sensor-0'):
